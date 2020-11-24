@@ -1,4 +1,7 @@
-# Ignore primenums.txt
+# Ignore primenums files
+primenums[0-9]*.zip
+primenums[0-9]*.txt
+primenums.zip
 primenums.txt
 
 # Byte-compiled / optimized / DLL files

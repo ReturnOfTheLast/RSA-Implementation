@@ -4,10 +4,10 @@
 c="\e[0;32m"
 cl="\e[0m"
 
-echo -e "\n${c}[*] Installing python3, virtualenv and unzip${cl}" && \
-sudo pacman --noconfirm -Syu python python-virtualenv unzip && \
+echo -e "\n${c}[*] Installing python3, virtualenv, curl and unzip${cl}" && \
+sudo pacman --noconfirm -Syu python python-virtualenv curl unzip && \
 echo -e "$\n${c}[*] Setting up virtualenv${cl}" && \
 virtualenv venv && \
-echo -e "\n${c}[*] Unzipping primenums.zip${cl}" && \
-unzip -o primenums.zip && \
-echo -e "\n${c}[*] Finished setup${cl}" || echo -e "\n${c}[*] Something went wrong${cl}"
+echo -e "\n${c}[*] Downloading prime numbers${cl}" && \
+bash download_primenumbers.sh && \
+echo -e "\n${c}[*] Finished setup${cl}" || ( echo -e "\n${c}[*] Something went wrong${cl}"; exit 1)
