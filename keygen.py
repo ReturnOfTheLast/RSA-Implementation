@@ -57,8 +57,9 @@ def __Internal_IsPrime(num):
 def __Internal_FindLeastCommonMultiple(num1, num2):
     lcm = int((num1 * num2) / __math.gcd(num1, num2))
     return lcm
-ESOTERIC
 
+def __Internal_GeneratePublicKey(tot, keysize):    
+    while True:
         e = __rnd.randint(2 ** (keysize / 2), tot - 1)
         print(str(e) + " " * 8 + "\r", end="")
         if __math.gcd(e, tot) == 1:
