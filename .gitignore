@@ -1,8 +1,12 @@
 # Ignore primenums files
-primenums[0-9]*.zip
-primenums[0-9]*.txt
 primenums.zip
 primenums.txt
+
+# Ignore keys
+[Gg]enerated_[Kk]eys/
+[Kk]eys/
+*.priv.json
+*.pub.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
