@@ -3,20 +3,23 @@
 import os as __os
 import random as __rnd
 
-# Pregenerated primes from file
-f = open("primenums.txt", "r")
-lines = f.readlines()
-f.close()
+def LoadPrePrimes():
+    # Pregenerated primes from file
+    f = open("primenums.txt", "r")
+    lines = f.readlines()
+    f.close()
 
-primes = list()
+    global primes
+    primes = list()
 
-for line in lines:
-    primes.append(int(line.strip()))
+    for line in lines:
+        primes.append(int(line.strip()))
 
 def __Internal__RandomNumber(byteLength):
     return int.from_bytes(__os.urandom(byteLength), byteorder="big")
 
 def __Internal_LowLevelPrime(byteLength):
+    global primes
     while True:
         pc = __Internal__RandomNumber(byteLength)
 
