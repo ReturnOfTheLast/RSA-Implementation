@@ -21,6 +21,12 @@ python keygen.py -b <keysize>
 You will get two files in the **generated_keys** directory. The files is named in the format
 
 ```text
+<name>.<priv|pub>.json
+```
+
+or
+
+```text
 <year>-<month>-<day>_<hours><minutes><seconds>.<priv|pub>.json
 ```
 

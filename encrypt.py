@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Encrypt and decrypt with RSA keys")
     parser.add_argument('-d', '--decrypt', dest="decrypt", help="Enable decryption", action="store_true")
-    parser.add_argument(dest="input", help="text or integer list", metavar="input", action="store")
+    parser.add_argument(dest="input", help="text or integer", metavar="input", action="store")
     parsekeygroup = parser.add_mutually_exclusive_group(required=True)
     parsekeygroup.add_argument('-prk', '--private-key', dest="privatekey", help="", metavar="file", action="store")
     parsekeygroup.add_argument('-puk', '--public-key', dest="publickey", help="", metavar="file", action="store")
@@ -47,6 +47,7 @@ if __name__ == "__main__":
             if not __Internal_IsKeyLongEnough(keyParameters["pub"]["keysize"], args.input):
                 print("Error: Input to long for keysize")
                 sys.exit(1)
+            
             output = EncryptText(str(args.input), keyParameters["pub"]["e"], keyParameters["pub"]["n"])
 
     else:

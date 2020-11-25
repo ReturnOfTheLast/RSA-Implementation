@@ -1,5 +1,6 @@
 # Inspired by https://www.geeksforgeeks.org/how-to-generate-large-prime-numbers-for-rsa-algorithm/
 
+import os as __os
 import random as __rnd
 
 # Pregenerated primes from file
@@ -12,12 +13,12 @@ primes = list()
 for line in lines:
     primes.append(int(line.strip()))
 
-def __Internal__RandomBits(length):
-    return __rnd.randint((2 ** (length - 1)) + 1, (2 ** length) - 1)
+def __Internal__RandomNumber(byteLength):
+    return int.from_bytes(__os.urandom(byteLength), byteorder="big")
 
-def __Internal_LowLevelPrime(length):
+def __Internal_LowLevelPrime(byteLength):
     while True:
-        pc = __Internal__RandomBits(length)
+        pc = __Internal__RandomNumber(byteLength)
 
         for divisor in primes:
             if pc % divisor == 0 and divisor**2 <= pc:
@@ -48,9 +49,9 @@ def __Internal__MillerRabinTest(mrc):
             return False
     return True
 
-def GeneratePrime(length):
+def GeneratePrime(byteLength):
     while True:
-        prime_candidate = __Internal_LowLevelPrime(length)
+        prime_candidate = __Internal_LowLevelPrime(byteLength)
         if not __Internal__MillerRabinTest(prime_candidate):
             continue
         else:
