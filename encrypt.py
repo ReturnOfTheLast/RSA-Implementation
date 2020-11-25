@@ -1,10 +1,12 @@
+import math as __math
+
 def EncryptText(text, e, n):
-    ctext = [pow(ord(char), e, n) for char in text]
+    ctext = pow(int.from_bytes(text.encode('utf-8'), byteorder="big"), e, n)
     return ctext
 
 def DecryptText(ctext, d, n):
     try:
-        text = [chr(pow(char, d, n)) for char in ctext]
+        text = pow(ctext, d, n).to_bytes(int(__math.ceil(ctext.bit_length() / 8)) * 8, byteorder="big").decode('utf-8')
         return "".join(text)
     except TypeError as e:
         print(e)
@@ -20,7 +22,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Encrypt and decrypt with RSA keys")
     parser.add_argument('-d', '--decrypt', dest="decrypt", help="Enable decryption", action="store_true")
-    parser.add_argument(dest="input", help="text or integer list", type=str, metavar="input", action="store")
+    parser.add_argument(dest="input", help="text or integer list", metavar="input", action="store")
     parsekeygroup = parser.add_mutually_exclusive_group(required=True)
     parsekeygroup.add_argument('-prk', '--private-key', dest="privatekey", help="", metavar="file", action="store")
     parsekeygroup.add_argument('-puk', '--public-key', dest="publickey", help="", metavar="file", action="store")
@@ -32,10 +34,7 @@ if __name__ == "__main__":
         keyParameters = ExtractKeyParameters(args.privatekey)
 
         if args.decrypt:
-            inp = str(args.input).replace("[", "").replace("]", "").split(",")
-            ctext = list()
-            for i in inp:
-                ctext.append(int(i))
+            ctext = int(args.input)
 
             output = DecryptText(ctext, keyParameters["priv"]["d"], keyParameters["pub"]["n"])
         else:

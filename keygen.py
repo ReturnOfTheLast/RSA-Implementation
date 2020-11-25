@@ -13,7 +13,7 @@ def GenerateKeyPair(keysize):
     
     print("")
     
-    print("Calculating λ(n) = lcm(p - 1, q - 1)")
+    print("Calculating λ(n)")
     tot = (p - 1) * (q - 1)
     print("λ(n) = " + hex(tot) + " (" + str(tot.bit_length()) + " bits)")
 
