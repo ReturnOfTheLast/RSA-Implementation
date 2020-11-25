@@ -15,6 +15,12 @@ def ExtractKeyParameters(keyfile):
     with open(keyfile, "r") as fp:
             return json.load(fp)
 
+def __Internal_IsKeyLongEnough(keysize, input):
+    if type(input) is str:
+        return len(input.encode('utf-8')) * 8 < keysize
+    
+    return False
+
 if __name__ == "__main__":
     import argparse
     import json
@@ -38,6 +44,9 @@ if __name__ == "__main__":
 
             output = DecryptText(ctext, keyParameters["priv"]["d"], keyParameters["pub"]["n"])
         else:
+            if not __Internal_IsKeyLongEnough(keyParameters["pub"]["keysize"], args.input):
+                print("Error: Input to long for keysize")
+                sys.exit(1)
             output = EncryptText(str(args.input), keyParameters["pub"]["e"], keyParameters["pub"]["n"])
 
     else:
@@ -46,6 +55,10 @@ if __name__ == "__main__":
             sys.exit(1)
         
         keyParameters = ExtractKeyParameters(args.publickey)
+
+        if not __Internal_IsKeyLongEnough(keyParameters["keysize"], args.input):
+            print("Error: Input to long for keysize")
+            sys.exit(1)
 
         output = EncryptText(str(args.input), keyParameters["e"], keyParameters["n"])
 
