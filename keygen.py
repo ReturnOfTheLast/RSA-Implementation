@@ -14,7 +14,7 @@ def GenerateKeyPair(keysize):
     print("")
     
     print("Calculating λ(n) = lcm(p - 1, q - 1)")
-    tot = __Internal_FindLeastCommonMultiple(p - 1, q - 1)
+    tot = (p - 1) * (q - 1)
     print("λ(n) = " + hex(tot) + " (" + str(tot.bit_length()) + " bits)")
 
     print("")
@@ -43,10 +43,6 @@ def __Internal_GenerateN(keysize):
         q = __pg.GeneratePrime(keysize / 2)
 
     return p * q, p, q
-
-def __Internal_FindLeastCommonMultiple(num1, num2):
-    lcm = int((num1 * num2) / __math.gcd(num1, num2))
-    return lcm
 
 def __Internal_GeneratePublicKey(tot, keysize):    
     while True:
@@ -90,6 +86,7 @@ if __name__ == "__main__":
             "d": keyParameters[5]
         },
         "pub": {
+            "keysize": args.keysize,
             "n": keyParameters[0],
             "e": keyParameters[4]
         }
