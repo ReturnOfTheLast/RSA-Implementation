@@ -38,6 +38,10 @@ def __Internal_GenerateN(keysize):
     p = __pg.GeneratePrime(keysize / 2)
     q = __pg.GeneratePrime(keysize / 2)
 
+    # The prime numbers must not be the same
+    while p == q:
+        q = __pg.GeneratePrime(keysize / 2)
+
     return p * q, p, q
 
 def __Internal_FindLeastCommonMultiple(num1, num2):
