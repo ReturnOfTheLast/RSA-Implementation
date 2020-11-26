@@ -6,6 +6,12 @@ import sys as __sys
 from datetime import datetime as __dt
 
 def GenerateKeyPair(keysize):
+    print("Loading 50.000.000 prime numbers from file")
+    __pg.LoadPrimes()
+    print("Loaded primes")
+
+    print("")
+
     print("Generating p, q and n")
     n, p, q = __Internal_GenerateN(keysize)
     print("p = " + hex(p) + " (" + str(p.bit_length()) + " bits)")
@@ -78,8 +84,9 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="RSA keygen")
     parser.add_argument('-b', '--bits', dest='keysize', type=int, default=1024)
-    parser.add_argument('-n', '--name', dest='name', type=str)
-    parser.add_argument('-e', '--email', dest='email', type=str)
+    parser.add_argument('--name', dest='name', type=str)
+    parser.add_argument('--email', dest='email', type=str)
+    parser.add_argument('--comment', dest='comment', type=str)
     args = parser.parse_args()
     keyParameters = GenerateKeyPair(args.keysize)
 
@@ -96,6 +103,7 @@ if __name__ == "__main__":
     publicdata = {
         "name": args.name,
         "email": args.email,
+        "comment": args.comment,
         "keysize": args.keysize,
         "n": hex(keyParameters[0]),
         "e": hex(keyParameters[4])

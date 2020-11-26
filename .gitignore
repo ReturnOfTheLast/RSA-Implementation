@@ -1,6 +1,7 @@
 # Ignore primenums files
 primenums.zip
 primenums.txt
+primenums.json
 
 # Ignore keys
 [Gg]enerated_[Kk]eys/
