@@ -1,15 +1,12 @@
 import math as __math
 
-def EncryptText(text, e, n):
-    ctext = pow(int.from_bytes(text.encode('utf-8'), byteorder="big"), e, n)
-    return ctext
+def Encrypt(plain, e, n):
+    cipher = pow(int.from_bytes(plain, byteorder="big"), e, n)
+    return cipher.to_bytes(int(__math.ceil(cipher.bit_length() / 8 )) * 8, byteorder="big")
 
-def DecryptText(ctext, d, n):
-    try:
-        text = pow(ctext, d, n).to_bytes(int(__math.ceil(ctext.bit_length() / 8)) * 8, byteorder="big").decode('utf-8')
-        return "".join(text)
-    except TypeError as e:
-        print(e)
+def Decrypt(cipher, d, n):
+    plain = pow(int.from_bytes(cipher, byteorder="big"), d, n)
+    return plain.to_bytes(int(__math.ceil(plain.bit_length() / 8)) * 8, byteorder="big")
 
 def ExtractKeyParameters(keyfile):
     with open(keyfile, "r") as fp:
@@ -38,29 +35,24 @@ if __name__ == "__main__":
 
     if args.privatekey:
         keyParameters = ExtractKeyParameters(args.privatekey)
-
-        if args.decrypt:
-            ctext = int(args.input)
-
-            output = DecryptText(ctext, keyParameters["priv"]["d"], keyParameters["pub"]["n"])
-        else:
-            if not __Internal_IsKeyLongEnough(keyParameters["pub"]["keysize"], args.input):
-                print("Error: Input to long for keysize")
-                sys.exit(1)
-            
-            output = EncryptText(str(args.input), keyParameters["pub"]["e"], keyParameters["pub"]["n"])
-
-    else:
+    
+    elif args.publickey:
         if args.decrypt:
             print("Error: Private key must be used for decryption")
             sys.exit(1)
         
         keyParameters = ExtractKeyParameters(args.publickey)
+    
+    else:
+        sys.exit(1)
 
-        if not __Internal_IsKeyLongEnough(keyParameters["keysize"], args.input):
+    if args.decrypt:
+        output = Decrypt(int(args.input, 16).to_bytes(int(__math.ceil(int(args.input, 16).bit_length() / 8)) * 8, byteorder="big"), int(keyParameters["priv"]["d"], 16), int(keyParameters["pub"]["n"], 16)).decode('utf-8')
+    else:
+        if not __Internal_IsKeyLongEnough(int(keyParameters["pub"]["keysize"]), args.input):
             print("Error: Input to long for keysize")
             sys.exit(1)
 
-        output = EncryptText(str(args.input), keyParameters["e"], keyParameters["n"])
+        output = hex(int.from_bytes(Encrypt(args.input.encode('utf-8'), int(keyParameters["pub"]["e"], 16), int(keyParameters["pub"]["n"], 16)), byteorder="big"))
 
     print(output)

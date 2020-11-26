@@ -6,7 +6,12 @@ import sys as __sys
 from datetime import datetime as __dt
 
 def GenerateKeyPair(keysize):
-    __pg.LoadPrePrimes()
+    print("Loading 50.000.000 prime numbers from file")
+    __pg.LoadPrimes()
+    print("Loaded primes")
+
+    print("")
+
     print("Generating p, q and n")
     n, p, q = __Internal_GenerateN(keysize)
     print("p = " + hex(p) + " (" + str(p.bit_length()) + " bits)")
@@ -81,26 +86,36 @@ if __name__ == "__main__":
     parser.add_argument('-b', '--bits', dest='keysize', metavar="int", help="key size", type=int, default=1024)
     parser.add_argument('-n', '--name', dest='name', metavar="string", type=str)
     parser.add_argument('-e', '--email', dest='email', metavar="string", type=str)
+    parser.add_argument('-c', '--comment', dest='comment', metavar="string", type=str)
     args = parser.parse_args()
     keyParameters = GenerateKeyPair(args.keysize)
 
     print("Writing keys")
-    keydata = {
-        "priv": {
-            "primes": [
-                keyParameters[1],
-                keyParameters[2]
-            ],
-            "tot": keyParameters[3],
-            "d": keyParameters[5]
-        },
-        "pub": {
-            "name": args.name,
-            "email": args.email,
-            "keysize": args.keysize,
-            "n": keyParameters[0],
-            "e": keyParameters[4]
-        }
+    
+    privatedata = {
+        "primes": [
+            hex(keyParameters[1]),
+            hex(keyParameters[2])
+        ],
+        "tot": hex(keyParameters[3]),
+        "d": hex(keyParameters[5])
+    }
+    publicdata = {
+        "name": args.name,
+        "email": args.email,
+        "comment": args.comment,
+        "keysize": args.keysize,
+        "n": hex(keyParameters[0]),
+        "e": hex(keyParameters[4])
+    }
+
+    privatekey = {
+        "priv": privatedata,
+        "pub": publicdata
+    }
+
+    publickey = {
+        "pub": publicdata
     }
 
     exportdir = "generated_keys"
@@ -111,9 +126,9 @@ if __name__ == "__main__":
         keyprefix = __dt.now().strftime("%Y-%m-%d_%H%M%S")
 
     with open( exportdir + "/" + keyprefix + ".priv.json", "w") as private_key_file:
-        __json.dump(keydata, private_key_file, indent=2)
+        __json.dump(privatekey, private_key_file, indent=2)
     
-    with open("generated_keys/" + keyprefix + ".pub.json", "w") as public_key_file:
-        __json.dump(keydata["pub"], public_key_file, indent=2)
+    with open( exportdir + "/" + keyprefix + ".pub.json", "w") as public_key_file:
+        __json.dump(publickey, public_key_file, indent=2)
 
     print("Keys written to " + exportdir + "/" + keyprefix + ".priv.json and "  + exportdir + "/" + keyprefix + ".pub.json" )

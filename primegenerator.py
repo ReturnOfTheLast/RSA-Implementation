@@ -2,18 +2,14 @@
 
 import os as __os
 import random as __rnd
+import json as __json
 
-def LoadPrePrimes():
+def LoadPrimes():
     # Pregenerated primes from file
-    f = open("primenums.txt", "r")
-    lines = f.readlines()
-    f.close()
-
     global primes
-    primes = list()
-
-    for line in lines:
-        primes.append(int(line.strip()))
+    
+    with open("primenums.json", "r") as read_file:
+        primes = __json.load(read_file)
 
 def __Internal__RandomNumber(byteLength):
     return int.from_bytes(__os.urandom(byteLength), byteorder="big")
