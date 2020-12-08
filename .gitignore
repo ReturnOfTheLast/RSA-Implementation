@@ -9,6 +9,9 @@ primenums.json
 *.priv.json
 *.pub.json
 
+# Ignore timeresults
+timeresults.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
