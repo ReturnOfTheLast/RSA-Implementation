@@ -53,7 +53,7 @@ def __Internal_GenerateN(keysize):
 
     return p * q, p, q
 
-def __Internal_GeneratePublicKey(tot, keysize):    
+def __Internal_GeneratePublicKey(tot):
     while True:
         e = __rnd.randint(2, tot - 1)
         if __math.gcd(e, tot) == 1:
