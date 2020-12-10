@@ -27,7 +27,7 @@ def GenerateKeyPair(keysize):
     print("")
 
     print("Generating public key")
-    e = __Internal_GeneratePublicKey(tot, keysize)
+    e = __Internal_GeneratePublicKey(tot)
     print("e = " + hex(e) + " (" + str(e.bit_length()) + " bits)")
 
     print("")

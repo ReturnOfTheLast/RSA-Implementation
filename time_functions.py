@@ -1,6 +1,7 @@
 # https://www.pythoncentral.io/time-a-python-function/
 
 from timeit import timeit as __ti
+from random import randbytes as __rb
 import json
 
 # Variables
@@ -87,14 +88,14 @@ __GeneratePrimeTime(32)
 # 512 bits (64 bytes)
 __GeneratePrimeTime(64)
 
-## 1024 bits (128 bytes)
-#__GeneratePrimeTime(128)
+# 1024 bits (128 bytes)
+__GeneratePrimeTime(128)
 
-## 2048 bits (256 bytes)
-#__GeneratePrimeTime(256)
+# 2048 bits (256 bytes)
+__GeneratePrimeTime(256)
 
-## 4096 bits (512 bytes)
-#__GeneratePrimeTime(512)
+# 4096 bits (512 bytes)
+__GeneratePrimeTime(512)
 
 # Keygen
 import keygen as __kg
@@ -221,6 +222,52 @@ __GeneratePRKTime(2048)
 # 4096 bits (keysize)
 __GeneratePRKTime(4096)
 
+# encrypt
+import encrypt as __ec
+
+print(" ---- Encrypt ----")
+
+# - Crypt()
+
+eKeysizes = list()
+eTotals = list()
+eAverages = list()
+
+def __cryptTime(keysize):
+    n, p, q = __kg.__Internal_GenerateN(keysize)
+    tot = (p - 1) * (q - 1)
+    e = __kg.__Internal_GeneratePublicKey(tot)
+    wrapped = wrapper(__ec.Crypt, __rb(1), e, n)
+    total=__ti(wrapped, number=trialCount)
+    average=total/trialCount
+
+    print("Crypt(" + hex(e) + ", " + hex(n) + ") (" + str(keysize) + " bits) with " + str(trialCount) + " runs: " + str(total) + " seconds total (" + str(average) + " seconds average)")
+
+    eKeysizes.append(keysize)
+    eTotals.append(total)
+    eAverages.append(average)
+
+# 64 bits (keysize)
+__cryptTime(64)
+
+# 128 bits (keysize)
+__cryptTime(128)
+
+# 256 bits (keysize)
+__cryptTime(256)
+
+# 512 bits (keysize)
+__cryptTime(512)
+
+# 1024 bits (keysize)
+__cryptTime(1024)
+
+# 2048 bits (keysize)
+__cryptTime(2048)
+
+# 4096 bits (keysize)
+__cryptTime(4096)
+
 # write results
 results = {
     "primegenerator": {
@@ -245,7 +292,12 @@ results = {
             "keysizes": gPRKKeysizes,
             "totals": gPRKTotals,
             "averages": gPRKAverages
-        }
+        },
+    "encrypt": {
+        "keysizes": eKeysizes,
+        "totals": eTotals,
+        "averages": eAverages
+    }
     }
 }
 
