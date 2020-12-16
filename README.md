@@ -31,3 +31,9 @@ or
 ```
 
 The first extension declares if the key is private or public. You can share the public with others, but keep the private secret.
+
+To encrypt and decrypt use **encrypt.py**:
+
+```bash
+python encrypt.py <-pub *.pub.json|-prk *.priv.json> <text|-d hex>
+```

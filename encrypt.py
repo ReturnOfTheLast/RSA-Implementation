@@ -1,19 +1,24 @@
 import math as __math
 
+# krypteringsfunktion tager bytes, eksponent og n som input
+# Returnere de (de)kryptede bytes
 def Crypt(inp, k, n):
     out = pow(int.from_bytes(inp, byteorder="big"), k, n)
     return out.to_bytes(int(__math.ceil(out.bit_length() / 8 )) * 8, byteorder="big")
 
+# Hjælpe funktion der læser nøgler fra json filer
 def ExtractKeyParameters(keyfile):
     with open(keyfile, "r") as fp:
             return json.load(fp)
 
+# Funktion der tjekker om 
 def __Internal_IsKeyLongEnough(keysize, input):
     if type(input) is str:
         return len(input.encode('utf-8')) * 8 < keysize
     
     return False
 
+# Kommando linje kald af programmet bruger argumenter som opsættes her
 if __name__ == "__main__":
     import argparse
     import json
@@ -42,6 +47,9 @@ if __name__ == "__main__":
     else:
         sys.exit(1)
 
+    # Hokus pokus sker her, omdanning af bytes til integers og tilbage sker her.
+    # Argumenterne bliver passeret til de rigtige funktioner med de rigtige typer.
+    # Denne del kunne godt rodes op hvis jeg havde tid, men det har jeg desværre ikke.
     if args.decrypt:
         output = Crypt(int(args.input, 16).to_bytes(int(__math.ceil(int(args.input, 16).bit_length() / 8)) * 8, byteorder="big"), int(keyParameters["priv"]["d"], 16), int(keyParameters["pub"]["n"], 16)).decode('utf-8')
     else:
