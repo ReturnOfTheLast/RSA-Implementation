@@ -20,9 +20,9 @@ def GenerateKeyPair(keysize):
 
     print("")
     
-    print("Calculating λ(n)")
+    print("Calculating Φ(n)")
     tot = (p - 1) * (q - 1)
-    print("λ(n) = " + hex(tot) + " (" + str(tot.bit_length()) + " bits)")
+    print("Φ(n) = " + hex(tot) + " (" + str(tot.bit_length()) + " bits)")
 
     print("")
 
